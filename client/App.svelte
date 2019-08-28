@@ -60,7 +60,7 @@ async function cancelInvoice (e) {
   <h1>Lightning Charger</h1>
   {#if params && !loggedkey}
     <a href="lightning:{params.lnurl}"><QR value={params.lnurl} color="#075d75" /></a>
-    <p>Scan the code above with <a href="https://lightning-wallet.com/">BLW</a> or other <a href="https://github.com/btcontract/lnurl-rfc/blob/master/spec.md#2-lnurl-login">lnurl-login</a>-compatible wallet.</p>
+    <p>Scan the code above with <a href="https://lightning-wallet.com/">BLW</a> or other <a href="https://github.com/btcontract/lnurl-rfc/blob/master/spec.md#2-lnurl-login">lnurl</a>-compatible wallet.</p>
   {/if}
   {#if loggedkey}
     <p>Logged as <code>{loggedkey}</code>.</p>
@@ -73,7 +73,7 @@ async function cancelInvoice (e) {
         </label>
         <button>Done</button>
       </form>
-      <p><small>99 satoshis will be added on top of it, this is a the <a href="https://golightning.club/" target="_blank">golightning.club</a> service fee, the smallest in the market.</small></p>
+      <p><small>99 satoshis will be added, it's the <a href="https://golightning.club/" target="_blank">golightning.club</a> service fee (the smallest in the market), and you'll have to submit <code>{(amountSats + 99) / 100000000} BTC</code> on-chain.</small></p>
     {:else if golightning}
       <p>Charge request submitted.</p>
       <p>You can now send <code>{golightning.price} BTC</code> to the address below. You have 10 days for your transaction to be confirmed. After that you can come back here at any time and withdraw your satoshis (even from different browsers, nothing is stored).</p>
@@ -82,7 +82,7 @@ async function cancelInvoice (e) {
       <p>If everything is wrong <span class="cancel" on:click={cancelInvoice}>click here</span> to cancel (don't click if you've already sent your Bitcoin transaction).</p>
     {:else if withdraw && withdraw.waiting === true}
       <p>We're waiting for your <b>Bitcoin transaction</b> to be confirmed so you can withdraw your satoshis to your Lightning wallet. However if you believe this is an error, please contact us on <a href="https://t.me/fiatjaf">Telegram</a> or <a href="https://twitter.com/fiatjaf">Twitter</a>.</p>
-      <p>If you never sent a Bitcoin transaction and just want to start everything from scratch <span class="cancel" on:click={cancelInvoice}>click here</span>.</p>
+      <p>If you didn't send a Bitcoin transaction and just want to start everything from scratch <span class="cancel" on:click={cancelInvoice}>click here</span>.</p>
     {:else if withdraw && withdraw.ready === true}
       <p>Your satoshis are available for withdraw.</p>
       <a href="lightning:{withdraw.lnurl}"><QR value={withdraw.lnurl} color="#077510" /></a>

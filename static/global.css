@@ -11,15 +11,15 @@ body {
   margin: 0;
   padding: 8px;
   box-sizing: border-box;
-  font-family: serif;
+  font-family: 'Livvic', serif;
   font-size: 1.2em;
 }
 
 a {
-  color: rgb(0,100,200);
+  color: #075d75;
   text-decoration: none;
 }
 a:hover { text-decoration: underline; }
-a:visited { color: rgb(0,80,160); }
+a:visited { color: #075d75; }
 
 input { height: 20px; }
