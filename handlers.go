@@ -34,8 +34,8 @@ func setupHandlers() {
 
 		json.NewEncoder(w).Encode(lnurl.LNURLWithdrawResponse{
 			LNURLResponse:      lnurl.LNURLResponse{Status: "OK"},
-			Callback:           fmt.Sprintf("%s/lnurl-withdraw/callback/%s", s.ServiceURL, session),
-			K1:                 randomHex(64), // use a new k1 here just because we can
+			Callback:           fmt.Sprintf("%s/lnurl-withdraw/callback", s.ServiceURL),
+			K1:                 session,
 			MaxWithdrawable:    msatoshi,
 			MinWithdrawable:    msatoshi,
 			DefaultDescription: "charger.alhur.es withdraw",
@@ -43,20 +43,10 @@ func setupHandlers() {
 		})
 	})
 
-	http.HandleFunc("/lnurl-withdraw/callback/", func(w http.ResponseWriter, r *http.Request) {
-		parts := strings.Split(r.URL.Path, "/")
-		session := parts[len(parts)-1]
+	http.HandleFunc("/lnurl-withdraw/callback", func(w http.ResponseWriter, r *http.Request) {
+		session := r.URL.Query().Get("k1")
 		pubkey := userKeys[session]
 		label := "inv-espera-" + pubkey
-
-		// check signature
-		k1 := r.URL.Query().Get("k1")
-		sig := r.URL.Query().Get("sig")
-		if ok, err := lnurl.VerifySignature(k1, sig, pubkey); !ok {
-			log.Warn().Err(err).Msg("withdraw signature verification failed")
-			json.NewEncoder(w).Encode(lnurl.ErrorResponse("Invalid signature!"))
-			return
-		}
 
 		// check amounts
 		resp, err := spark.Call("listinvoices", label)
