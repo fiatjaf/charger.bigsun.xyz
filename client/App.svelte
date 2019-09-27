@@ -54,11 +54,18 @@ async function cancelInvoice (e) {
   }
 
   span.cancel:hover { background: #bbb; }
+
+  footer {
+    position: absolute;
+    bottom: 0;
+    padding: 24px;
+  }
 </style>
 
 <div id="main">
   <h1>Lightning Charger</h1>
   {#if params && !loggedkey}
+    <p>A place to send money from the blockchain to your not-always-on mobile wallet.</p>
     <a href="lightning:{params.lnurl}"><QR value={params.lnurl} color="#075d75" /></a>
     <p>Scan the code above with <a href="https://lightning-wallet.com/">BLW</a> or other <a href="https://github.com/btcontract/lnurl-rfc/blob/master/spec.md#2-lnurl-login">lnurl</a>-compatible wallet.</p>
   {/if}
@@ -92,5 +99,11 @@ async function cancelInvoice (e) {
     {:else if withdraw && withdraw.processed === true}
       <p>Transaction sent!</p>
     {/if}
+  {/if}
+
+  {#if !loggedkey}
+    <footer>
+      Powered by <a href="https://github.com/btcontract/lnurl-rfc/blob/master/spec.md">lnurl</a>, <a href="https://golightning.club/">golightning.club</a> and <a href="https://github.com/fiatjaf/lightningd-gjson-rpc/tree/master/cmd/sparko">sparko</a>.
+    </footer>
   {/if}
 </div>
