@@ -33,7 +33,11 @@ func main() {
 	}
 
 	// spark client
-	spark = &lightning.Client{SparkURL: s.SparkURL, SparkToken: s.SparkToken}
+	spark = &lightning.Client{
+		SparkURL:              s.SparkURL,
+		SparkToken:            s.SparkToken,
+		DontCheckCertificates: true,
+	}
 
 	// routes
 	setupHandlers()
