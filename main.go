@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/fiatjaf/lightningd-gjson-rpc"
 	"github.com/kelseyhightower/envconfig"
@@ -37,6 +38,7 @@ func main() {
 		SparkURL:              s.SparkURL,
 		SparkToken:            s.SparkToken,
 		DontCheckCertificates: true,
+		CallTimeout:           time.Second * 60,
 	}
 
 	// routes

@@ -87,11 +87,14 @@ func setupHandlers() {
 		}
 
 		// everything is ok, process withdraw
+		log.Debug().Str("key", pubkey).Str("bolt11", pr).Str("recv-label", label).Int64("balance", msatoshiBalance).
+			Msg("processing withdraw")
 		go func() {
 			withdrawalsInProcess[label] = true
 			_, err := spark.Call("waitpay", pr)
 			if err != nil {
 				log.Error().Err(err).Str("key", pubkey).Str("pr", pr).Msg("failed to pay")
+				return
 			}
 
 			// delete invoice from spark (so the user can do it again)
