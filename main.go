@@ -38,7 +38,7 @@ func main() {
 		SparkURL:              s.SparkURL,
 		SparkToken:            s.SparkToken,
 		DontCheckCertificates: true,
-		CallTimeout:           time.Second * 60,
+		CallTimeout:           time.Hour * 6000,
 	}
 
 	// routes
